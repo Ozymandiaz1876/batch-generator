@@ -49,7 +49,7 @@ const UnoDemoGenerator = () => {
 
   return (
     <div className="uno-demo-generator">
-      <h2>Uno SaaS Demo Test Case Generator</h2>
+      <h2>Uno Batch Generator</h2>
       
       <div className="input-group">
         <label htmlFor="partner">Partner</label>

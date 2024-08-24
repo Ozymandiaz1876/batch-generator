@@ -74,7 +74,7 @@ const UnoDemoGenerator = () => {
           type="text"
           value={spoCode}
           readOnly
-          className="dropdown-trigger"
+          className="dropdown-trigger w-full px-3 py-2 text-sm border rounded-md"
         />
       </div>
       

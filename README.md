@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Uno SaaS Demo Generator
+
+## Overview
+
+The Uno SaaS Demo Generator is a web application designed to streamline the process of creating test case files for Uno SaaS demos. This tool replaces the manual process of running scripts, converting CSV files to Excel, and manually downloading them.
+
+## Features
+
+- Select SPO Code from a dropdown
+- Input the desired number of records
+- Choose the number of files to generate (1, 5, or 10)
+- Generate and download Excel (.xlsx) files within seconds
+
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- shadcn/ui (based on Radix UI)
+- xlsx (for Excel file generation)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Node.js (v14 or later)
+- npm (v6 or later)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Installation
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+1. Clone the repository:
+   ```
+   git clone https://github.com/your-username/uno-saas-demo-generator.git
+   ```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+2. Navigate to the project directory:
+   ```
+   cd uno-saas-demo-generator
+   ```
 
-## Learn More
+3. Install dependencies:
+   ```
+   npm install
+   ```
 
-To learn more about Next.js, take a look at the following resources:
+### Running the Application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Start the development server:
+   ```
+   npm run dev
+   ```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+2. Open your browser and visit `http://localhost:3000`
 
-## Deploy on Vercel
+## Usage
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Select the desired SPO Code from the dropdown.
+2. Enter the number of records you want to generate.
+3. Choose the number of files to generate using the chip buttons (1, 5, or 10).
+4. Click the "Generate and Download Excel" button.
+5. Wait for the files to be generated and downloaded (usually within 1-2 seconds).
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Customization
+
+To add or modify SPO Codes, edit the `spoCodes` array in the `UnoDemoGenerator.tsx` file.
+
+To change the data generation logic, modify the `generateSampleData` function in the `src/lib/dataGenerator.ts` file.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is licensed under the MIT License.

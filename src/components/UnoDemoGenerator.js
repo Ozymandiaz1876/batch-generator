@@ -8,6 +8,7 @@ const UnoDemoGenerator = () => {
   const [partner, setPartner] = useState('Demo account');
   const [spoCode, setSpoCode] = useState('AFLDEM');
   const [numberOfRecords, setNumberOfRecords] = useState(1);
+  const [numberOfBatches, setNumberOfBatches] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
 
   const partnerMapping = {
@@ -18,6 +19,7 @@ const UnoDemoGenerator = () => {
   };
 
   const batchRecordOptions = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000];
+  const batchOptions = [1, 5, 10];
 
   const handlePartnerChange = (selectedPartner) => {
     setPartner(selectedPartner);
@@ -28,7 +30,7 @@ const UnoDemoGenerator = () => {
     setIsGenerating(true);
     const zip = new JSZip();
     
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < numberOfBatches; i++) {
       const sampleData = generateSampleData(spoCode, numberOfRecords);
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(sampleData);
@@ -40,7 +42,7 @@ const UnoDemoGenerator = () => {
     }
     
     zip.generateAsync({type:"blob"}).then(function(content) {
-      saveAs(content, `sampleData-${spoCode}-${numberOfRecords}.zip`);
+      saveAs(content, `sampleData-${spoCode}-${numberOfRecords}-${numberOfBatches}batches.zip`);
       setIsGenerating(false);
     });
   };
@@ -77,13 +79,30 @@ const UnoDemoGenerator = () => {
       </div>
       
       <div className="input-group">
-        <label>Number of Batch Records</label>
+        <label htmlFor="numberOfRecords">Number of Records per Batch</label>
         <select
+          id="numberOfRecords"
           value={numberOfRecords}
           onChange={(e) => setNumberOfRecords(parseInt(e.target.value))}
           className="dropdown-trigger"
         >
           {batchRecordOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      <div className="input-group">
+        <label htmlFor="numberOfBatches">Number of Batches</label>
+        <select
+          id="numberOfBatches"
+          value={numberOfBatches}
+          onChange={(e) => setNumberOfBatches(parseInt(e.target.value))}
+          className="dropdown-trigger"
+        >
+          {batchOptions.map((option) => (
             <option key={option} value={option}>
               {option}
             </option>

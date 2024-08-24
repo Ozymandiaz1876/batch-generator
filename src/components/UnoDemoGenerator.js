@@ -1,40 +1,48 @@
 import React, { useState } from 'react';
 import { generateSampleData } from '../lib/dataGenerator';
 import * as XLSX from 'xlsx';
-
+import JSZip from 'jszip';
+import { saveAs } from 'file-saver';
 
 const UnoDemoGenerator = () => {
-  const [spoCode, setSpoCode] = useState('AFLDEMUSFB01HDFC01ICI01AXIS01');
-  const [numberOfRecords, setNumberOfRecords] = useState(10);
-  const [numberOfFiles, setNumberOfFiles] = useState(1);
+  const [partner, setPartner] = useState('Demo account');
+  const [spoCode, setSpoCode] = useState('AFLDEM');
+  const [numberOfRecords, setNumberOfRecords] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
 
-  const spoCodes = ['AFLDEMUSFB01HDFC01ICI01AXIS01', 'SPCODE2', 'SPCODE3']; // Add all relevant SPO codes
+  const partnerMapping = {
+    'Demo account': 'AFLDEM',
+    'Capri Global': 'AFLI24',
+    'Prayas': 'AFLCPR',
+    'Agrosperity': 'AFLCLF'
+  };
+
+  const batchRecordOptions = [1, 5, 10, 50, 100, 500, 1000, 5000, 10000];
+
+  const handlePartnerChange = (selectedPartner) => {
+    setPartner(selectedPartner);
+    setSpoCode(partnerMapping[selectedPartner]);
+  };
 
   const generateAndDownload = async () => {
     setIsGenerating(true);
+    const zip = new JSZip();
     
-    for (let i = 0; i < numberOfFiles; i++) {
+    for (let i = 0; i < 5; i++) {
       const sampleData = generateSampleData(spoCode, numberOfRecords);
       const wb = XLSX.utils.book_new();
       const ws = XLSX.utils.json_to_sheet(sampleData);
       XLSX.utils.book_append_sheet(wb, ws, "Sample Data");
       
       const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      const data = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
-      
       const fileName = `sampleData-${spoCode}-${numberOfRecords}-${i+1}.xlsx`;
-      const url = window.URL.createObjectURL(data);
-      const link = document.createElement('a');
-      link.href = url;
-      link.download = fileName;
-      link.click();
-      window.URL.revokeObjectURL(url);
-      
-      await new Promise(resolve => setTimeout(resolve, 100));
+      zip.file(fileName, excelBuffer);
     }
     
-    setIsGenerating(false);
+    zip.generateAsync({type:"blob"}).then(function(content) {
+      saveAs(content, `sampleData-${spoCode}-${numberOfRecords}.zip`);
+      setIsGenerating(false);
+    });
   };
 
   return (
@@ -42,44 +50,45 @@ const UnoDemoGenerator = () => {
       <h2>Uno SaaS Demo Test Case Generator</h2>
       
       <div className="input-group">
-        <label htmlFor="spoCode">SPO Code</label>
+        <label htmlFor="partner">Partner</label>
         <select
-          id="spoCode"
-          value={spoCode}
-          onChange={(e) => setSpoCode(e.target.value)}
+          id="partner"
+          value={partner}
+          onChange={(e) => handlePartnerChange(e.target.value)}
           className="dropdown-trigger"
         >
-          {spoCodes.map((code) => (
-            <option key={code} value={code}>
-              {code}
+          {Object.keys(partnerMapping).map((partnerName) => (
+            <option key={partnerName} value={partnerName}>
+              {partnerName}
             </option>
           ))}
         </select>
       </div>
-      
+
       <div className="input-group">
-        <label>Number of Records</label>
+        <label htmlFor="spoCode">SPO Code</label>
         <input
-          type="number"
-          value={numberOfRecords}
-          onChange={(e) => setNumberOfRecords(parseInt(e.target.value))}
-          min="1"
+          id="spoCode"
+          type="text"
+          value={spoCode}
+          readOnly
+          className="dropdown-trigger"
         />
       </div>
       
       <div className="input-group">
-        <label>Number of Files</label>
-        <div className="button-group">
-          {[1, 5, 10].map((num) => (
-            <button
-              key={num}
-              onClick={() => setNumberOfFiles(num)}
-              className={numberOfFiles === num ? 'active' : ''}
-            >
-              {num}
-            </button>
+        <label>Number of Batch Records</label>
+        <select
+          value={numberOfRecords}
+          onChange={(e) => setNumberOfRecords(parseInt(e.target.value))}
+          className="dropdown-trigger"
+        >
+          {batchRecordOptions.map((option) => (
+            <option key={option} value={option}>
+              {option}
+            </option>
           ))}
-        </div>
+        </select>
       </div>
       
       <button onClick={generateAndDownload} disabled={isGenerating}>

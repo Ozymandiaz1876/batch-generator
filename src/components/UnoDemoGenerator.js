@@ -3,6 +3,7 @@ import { generateSampleData } from '../lib/dataGenerator';
 import * as XLSX from 'xlsx';
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
+import BatchHistory from './BatchHistory';
 
 const UnoDemoGenerator = () => {
   const [partner, setPartner] = useState('Demo account');
@@ -10,6 +11,7 @@ const UnoDemoGenerator = () => {
   const [numberOfRecords, setNumberOfRecords] = useState(1);
   const [numberOfBatches, setNumberOfBatches] = useState(1);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [batchHistory, setBatchHistory] = useState([]);
 
   const partnerMapping = {
     'Demo account': 'AFLDEM',
@@ -29,6 +31,9 @@ const UnoDemoGenerator = () => {
   const generateAndDownload = async () => {
     setIsGenerating(true);
     const zip = new JSZip();
+    const currentDate = new Date();
+    const formattedDate = currentDate.toISOString().replace(/[:.]/g, '-').slice(0, -5);
+    const batchName = `Demo_${partner.replace(/\s+/g, '')}_${formattedDate}`;
     
     for (let i = 0; i < numberOfBatches; i++) {
       const sampleData = generateSampleData(spoCode, numberOfRecords);
@@ -37,13 +42,25 @@ const UnoDemoGenerator = () => {
       XLSX.utils.book_append_sheet(wb, ws, "Sample Data");
       
       const excelBuffer = XLSX.write(wb, { bookType: 'xlsx', type: 'array' });
-      const fileName = `sampleData-${spoCode}-${numberOfRecords}-${i+1}.xlsx`;
+      const fileName = `${batchName}_${i+1}.xlsx`;
       zip.file(fileName, excelBuffer);
     }
     
     zip.generateAsync({type:"blob"}).then(function(content) {
-      saveAs(content, `sampleData-${spoCode}-${numberOfRecords}-${numberOfBatches}batches.zip`);
+      const zipFileName = `${batchName}.zip`;
+      saveAs(content, zipFileName);
       setIsGenerating(false);
+      
+      // Add to batch history
+      setBatchHistory(prevHistory => [
+        ...prevHistory,
+        {
+          name: batchName,
+          date: currentDate,
+          size: numberOfRecords * numberOfBatches,
+          downloadUrl: URL.createObjectURL(content)
+        }
+      ]);
     });
   };
 
@@ -74,7 +91,7 @@ const UnoDemoGenerator = () => {
           type="text"
           value={spoCode}
           readOnly
-          className="dropdown-trigger w-full px-3 py-2 text-sm border rounded-md"
+          className="dropdown-trigger read-only-input"
         />
       </div>
       
@@ -110,9 +127,15 @@ const UnoDemoGenerator = () => {
         </select>
       </div>
       
-      <button onClick={generateAndDownload} disabled={isGenerating}>
+      <button 
+        onClick={generateAndDownload} 
+        disabled={isGenerating}
+        className={isGenerating ? 'loading' : ''}
+      >
         {isGenerating ? 'Generating...' : 'Generate Files'}
       </button>
+
+      <BatchHistory history={batchHistory} />
     </div>
   );
 };

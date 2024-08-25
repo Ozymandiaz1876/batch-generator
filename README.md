@@ -11,7 +11,7 @@ The Uno SaaS Demo Generator is a web application designed to streamline the proc
 - Choose the number of files to generate (1, 5, or 10)
 - Generate and download Excel (.xlsx) files within seconds
 
-## Tech Stack
+## Thrtdeyty78uch Stack
 
 - Next.js
 - React

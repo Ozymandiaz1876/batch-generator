@@ -1,0 +1,17 @@
+{
+  "$schema": "https://ui.shadcn.com/schema.json",
+  "style": "new-york",
+  "rsc": false,
+  "tsx": false,
+  "tailwind": {
+    "config": "src/components/BatchHistory.jssrc/components/UnoD",
+    "css": "/Users/divyanshudv/Desktop/dev/batch-record-generator/src/components/BatchHistory.js/Users/divyansh",
+    "baseColor": "slate",
+    "cssVariables": false,
+    "prefix": ""
+  },
+  "aliases": {
+    "components": "emoGenerator.js",
+    "utils": "@/lib/utils"
+  }
+}

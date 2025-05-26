@@ -3,18 +3,12 @@
 @import 'tailwindcss/utilities';
 
 body {
-  padding: 128px;
+  padding: 64px;
   font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
-@media (max-width: 500px) {
-  body {
-    padding: 32px;
-  }
-}
-
 .uno-demo-generator {
-  max-width: 900px;
+  max-width: 1080px;
   width: 100%;
   margin: 0 auto;
   padding: 32px;
@@ -69,9 +63,9 @@ select,
   background-color: #f8f8f8;
   border: 2px solid #ddd;
   color: #666;
-  width: 96%;
   cursor: not-allowed;
 }
+
 
 button {
   font-size: 16px;
@@ -100,35 +94,6 @@ button:disabled {
   cursor: not-allowed;
 }
 
-button.loading {
-  position: relative;
-  color: transparent;
-}
-
-button.loading::after {
-  content: "";
-  position: absolute;
-  width: 16px;
-  height: 16px;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  margin: auto;
-  border: 4px solid transparent;
-  border-top-color: #ffffff;
-  border-radius: 50%;
-  animation: button-loading-spinner 1s ease infinite;
-}
-
-@keyframes button-loading-spinner {
-  from {
-    transform: rotate(0turn);
-  }
-  to {
-    transform: rotate(1turn);
-  }
-}
 
 select {
     font-size: 16px;
@@ -156,120 +121,37 @@ select::-ms-expand {
     display: none;
 }
 
-.batch-history-container {
-  margin-top: 40px;
-  border: 1px solid #e0e0e0;
-  border-radius: 8px;
-  padding: 20px;
-  background-color: #f9f9f9;
-  overflow-x: auto;
+.batch-history {
+  margin-top: 48px;
 }
 
-.batch-history-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-  flex-wrap: wrap;
+.batch-history h3 {
+  margin-bottom: 16px;
 }
 
-.clear-history-btn {
-  background-color: #D1D5DB;
-  color: black;
-  padding: 6px 12px;
-  border: none;
-  width: auto;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
-  margin-top: 10px;
-}
-
-.batch-history-table {
+.batch-history table {
   width: 100%;
-  border-collapse: separate;
-  border-spacing: 0 10px;
+  background-color: #fefefe;
+  border-collapse: collapse;
 }
 
-.batch-history-table th,
-.batch-history-table td {
-  padding: 12px;
+.batch-history th,
+.batch-history td {
+  padding: 8px;
   text-align: left;
   border-bottom: 1px solid #ddd;
 }
 
-.batch-history-table th {
+.batch-history th {
   background-color: #f2f2f2;
   font-weight: bold;
 }
 
-.action-buttons {
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-start;
-  align-items: center;
-  gap: 8px;
-}
-
-.download-btn, .delete-btn {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 14px;
+.batch-history a {
+  color: #0066cc;
   text-decoration: none;
-  flex: 1;
-  text-align: center;
-  white-space: nowrap;
 }
 
-.download-btn {
-  background-color: #4CAF50;
-  color: white;
-}
-
-.delete-btn {
-  background-color: #f44336;
-  color: white;
-}
-
-@media (max-width: 768px) {
-  .batch-history-table {
-    font-size: 14px;
-  }
-
-  .batch-history-table th,
-  .batch-history-table td {
-    padding: 8px;
-  }
-
-  .action-buttons {
-    flex-direction: column;
-  }
-
-  .download-btn, .delete-btn {
-    width: 100%;
-    margin-bottom: 5px;
-  }
-}
-
-@media (max-width: 480px) {
-  .batch-history-table {
-    font-size: 12px;
-  }
-
-  .batch-history-table th,
-  .batch-history-table td {
-    padding: 6px;
-  }
-
-  .batch-history-header {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .clear-history-btn {
-    width: 100%;
-    margin-top: 10px;
-  }
+.batch-history a:hover {
+  text-decoration: underline;
 }

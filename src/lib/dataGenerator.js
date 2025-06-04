@@ -380,7 +380,7 @@ export function generateSampleData(spoCode, numberOfRecords) {
       "Co-borrower Nationality": "India",
       "Co-borrower Marital status": "Married",
       "Co-borrower Educational qualification": "Below 10th",
-      "Relation with primary borrower": "Spouse",
+      "Relation with primary borrower": generateNomineeRelationship(),
       "Co-borrower Occupation": "Self Employed",
       "Co-borrower Nature of work": "",
       "Co-borrower Annual Income": getRandomInt(10000, 500000),
